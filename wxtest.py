@@ -12,7 +12,6 @@ import time
 from lxml import etree
 
 
-import web
 
 urls = (
     '/(.*)', 'wxtest'
@@ -32,12 +31,12 @@ class wxtest:
         signature = data.signature
         timestamp = data.timestamp
         nonce = data.nonce
-        ostr = data.echostr
+        echostr = data.echostr
         token = 'allen'
         
         l = [token, timestamp, nonce]
         l.sort()
-        sha1 = haslib.sha1()
+        sha1 = hashlib.sha1()
         map(sha1.update,l)
         hashcode = sha1.hexdigest()
         
@@ -53,3 +52,7 @@ class wxtest:
         if msgType == 'text':
             content = xml.find('Content').text
             return self.render.reply(fromUser,toUser,int(time.time()),content)
+
+if __name__ == "__main__":
+    app.run()
+                   
