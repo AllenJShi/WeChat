@@ -32,7 +32,7 @@ class WeixinInterface:
         timestamp = data.timestamp
         nonce = data.nonce
         echostr = data.echostr
-        token = 'allen'
+        token = 'weixin45637'
         
         l = [token, timestamp, nonce]
         l.sort()
