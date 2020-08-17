@@ -13,6 +13,13 @@ import hashlib
 import time
 from lxml import etree
 
+urls = (
+	'/(.*)','WeixinInferface'
+)
+
+app = web.application(urls,globals())
+
+
 class WeixinInterface:
     def __init__(self):
         self.app_root = os.path.dirname(__file__)
@@ -24,7 +31,7 @@ class WeixinInterface:
         signature = data.signature
         timestamp = data.timestamp
         nonce = data.nonce
-        ostr = data.echostr
+        echostr = data.echostr
         token = 'allen'
         
         l = [token, timestamp, nonce]
@@ -45,3 +52,7 @@ class WeixinInterface:
         if msgType == 'text':
             content = xml.find('Content').text
             return self.render.reply(fromUser,toUser,int(time.time()),content)
+
+
+if __name__ == "__main__":
+	app.run()
