@@ -5,10 +5,19 @@ def parse_xml(web_data):
             return None
     xmlData = ET.fromstring(web_data)
     msg_type = xmlData.find('MsgType').text
+#    if True: 
+#	return Event(xmlData) 
     if msg_type == 'text':
         return TextMsg(xmlData)
     elif msg_type == 'image':
         return ImageMsg(xmlData)
+    elif msg_type == 'event':
+	eventType = xmlData.find('Event').text
+        if eventType == 'subscribe':
+    		return EventMsg(xmlData)
+	elif eventType == 'CLICK':
+		return Click(xmlData)
+
 
 class Msg(object):
     def __init__(self, xmlData):
@@ -28,3 +37,17 @@ class ImageMsg(Msg):
         Msg.__init__(self, xmlData)
         self.PicUrl = xmlData.find('PicUrl').text
         self.MediaId = xmlData.find('MediaId').text
+
+class EventMsg(object):
+    def __init__(self, xmlData):
+        self.CreateTime = xmlData.find('CreateTime').text
+        self.ToUserName = xmlData.find('ToUserName').text
+        self.FromUserName = xmlData.find('FromUserName').text
+
+        self.MsgType = 'event'
+        self.EventType = xmlData.find('Event').text
+
+class Click(EventMsg):
+    def __init__(self, xmlData):
+        EventMsg.__init__(self, xmlData)
+        self.Eventkey = xmlData.find('EventKey').text	
